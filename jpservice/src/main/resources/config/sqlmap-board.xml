@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ServiceDAO">
+    
+	<select id="list" resultType="ServiceVO">
+		SELECT SCNUM, SCTITLE, SCWRITER, SCWRTIME FROM SERVICE_CENTER
+	</select>
+
+	<insert id="insert" parameterType="ServiceVO">
+		INSERT INTO SERVICE_CENTER
+		(SCNUM, SCTITLE, SCWRITER, SCCONTENTS ,SCWRTIME)
+		VALUES
+		(SERVICE_CENTER_SEQ.nextval,
+		#{SCTITLE}, #{SCWRITER}, #{SCCONTENTS}, SYSDATE)
+	</insert>
+	
+	<select id="select" resultType="ServiceVO">
+	    SELECT SCTITLE, SCWRITER, SCWRTIME, SCCONTENTS FROM SERVICE_CENTER
+	    ORDER BY NBNUM
+	</select>
+
+	<update id="update" parameterType="ServiceVO">
+		UPDATE SERVICE_CENTER SET SCTITLE = #{SCTITLE},
+		SCCONTENTS = #{SCCONTENTS},
+		SCWRITER = #{SCWRITER}
+		WHERE SCNUM = #{SCNUM}
+	</update>
+
+	<delete id="delete" parameterType="ServiceVO">
+		DELETE FROM SERVICE_CENTER WHERE SCNUM = #{SCNUM}
+	</delete>
+
+</mapper>

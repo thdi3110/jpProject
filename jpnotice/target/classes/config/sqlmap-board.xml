@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="NoticeDAO">
+    
+	<select id="list" resultType="NoticeVO">
+		SELECT NBNUM, NBTITLE, NBWRITER, NBTIME FROM NOTICE_BOARD
+	</select>
+
+	<insert id="insert" parameterType="NoticeVO">
+		INSERT INTO NOTICE_BOARD
+		(NBNUM, NBTITLE, NBWRITER, NBCONTENTS,NBTIME)
+		VALUES
+		(NOTICE_BOARD_SEQ.nextval,
+		#{NBTITLE}, #{NBWRITER}, #{NBCONTENTS}, SYSDATE)
+	</insert>
+	
+	<select id="select" resultType="NoticeVO">
+	    SELECT NBTITLE, NBWRITER, NBTIME, NBCONTENTS FROM NOTICE_BOARD
+	    ORDER BY NBNUM
+	</select>
+
+	<update id="update" parameterType="NoticeVO">
+		UPDATE NOTICE_BOARD SET NBTITLE = #{NBTITLE},
+		NBCONTENTS = #{NBCONTENTS},
+		NBWRITER = #{NBWRITER}
+		WHERE NBNUM = #{NBNUM}
+	</update>
+
+	<delete id="delete" parameterType="NoticeVO">
+		DELETE FROM NOTICE_BOARD WHERE NBNUM = #{NBNUM}
+	</delete>
+
+</mapper>
