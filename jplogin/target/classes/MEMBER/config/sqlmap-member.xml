@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="memberDao">
+      <insert id = "insertNormal">
+      	insert into MEMBER(M_ID, M_NAME, M_PASSWORD, M_EMAIL, M_ADDRESS, M_PHONE, M_BCODE, M_ACCOUNT, M_DIVISION, M_JOINDATE, M_EMAILCHECK)
+      		values( #{M_ID}, #{M_NAME}, #{M_PASSWORD}, #{M_EMAIL}, #{M_ADDRESS}, #{M_PHONE}, #{M_BCODE}, #{M_ACCOUNT}, 'A1', SYSDATE, #{M_EMAILCHECK})
+      </insert>
+      
+      <insert id = "insertParcelOut">
+      	insert into MEMBER( M_ID, M_NAME, M_PASSWORD, M_EMAIL, M_ADDRESS, M_PHONE, M_BCODE, M_ACCOUNT, M_REGISTRATION, M_DIVISION, M_JOINDATE, M_EMAILCHECK)
+      		values( #{M_ID}, #{M_NAME}, #{M_PASSWORD}, #{M_EMAIL}, #{M_ADDRESS}, #{M_PHONE}, #{M_BCODE}, #{M_ACCOUNT}, #{M_REGISTRATION}, 'B1', SYSDATE, #{M_EMAILCHECK})
+      </insert>
+      
+      <update id="updateEmailAuthentication">
+      	update MEMBER set M_EMAILCHECK = 'Y' where M_EMAILCHECK = #{M_EMAILCHECK}
+      </update>
+      
+      <select id= "selectById" resultType="MemberVO" parameterType="String"> <!-- resultType="MemberVO" parameterType="String" -->
+      	select M_ID, M_EMAIL, M_DIVISION,  M_EMAILCHECK from MEMBER where M_ID = #{id}
+      </select>
+      
+      <select id="idCheck" resultType="int">
+      	select count(*) from MEMBER where M_ID = #{M_ID}
+      </select>
+      
+      <select id ="regCheck" resultType="int">
+      	select count(*) from REGISTRATION_DB where R_REGISTRATION = #{R_REGISTRATION}
+      </select>      
+     
+	  <select id="emailChk" resultType="int">
+      	select count(*) from MEMBER where M_EMAILCHECK = #{M_EMAILCHECK}
+      </select>
+      
+      <select id="loginCheck" resultType="String">
+      	select M_PASSWORD from MEMBER where M_ID = #{M_ID}
+      </select>
+</mapper>
