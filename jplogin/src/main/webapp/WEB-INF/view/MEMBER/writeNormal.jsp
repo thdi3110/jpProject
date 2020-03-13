@@ -12,13 +12,13 @@
 <body>
 	<h1>회원가입</h1>
 	<hr>
-	<form id="signFrm" name="signFrm" action="${pageContext.request.contextPath}/MEMBER/writeNormal" method="post">
+	<form id="signFrm" name="signFrm" action="${pageContext.request.contextPath}/member/writeNormal" method="post">
 		<table>
 			<tbody>
 				<tr>
 					<td>아이디</td>
 					<td><input type="text" id="MID" name="MID" ></td>
-					<td><input type="button" id="check" value="중복체크"></td>
+					<td><input type="button" id="Check" value="아이디 중복체크"></td>
 				</tr>
 				<tr>
 					<td colspan=3 id="idCheck"></td>
@@ -37,7 +37,11 @@
 				</tr>
 				<tr>
 					<td>이메일</td>
-					<td colspan="2"><input id="MEMAIL" name="MEMAIL" placeholder = "이메일형식" type="email" required></td>
+					<td><input id="MEMAIL" name="MEMAIL" placeholder = "이메일형식" type="email" required></td>
+					<td><input type="button" id="emailCheck" value="이메일 중복체크"></td>
+				</tr>
+				<tr>
+					<td colspan=3 id="msg"></td>
 				</tr>
 				<tr>
 					<td>주소</td>
@@ -92,6 +96,7 @@
 	$(document).ready(function(e){
 		
 		var idx = false;
+		var emailx = false;
 		var passwordRegExp = /^[A-Za-z0-9]{6,12}$/;
 		var emailRegExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 		var phoneRegExp = /^\d{3,4}-\d{4}$/;
@@ -144,15 +149,18 @@
 			 if(idx==false){
 				alert("아이디 중복체크를 해주세요.");
 				return;
+			}else if(emailx==false){
+				alert("이메일 중복체크를 해주세요.");
+				return;
 			}else{
 				$('#signFrm').submit();
 			} 
 		});
 		
-		$('#check').click(function(){
+		$('#Check').click(function(){
 			$.ajax({
-				url: "${pageContext.request.contextPath}/MEMBER/idCheck.do",
-				type: "GET",
+				url: "${pageContext.request.contextPath}/member/idCheck",
+				type: "POST",
 				data:{
 					"MID":$('#MID').val()
 				},
@@ -168,6 +176,35 @@
 						var html="<tr><td colspan='3' style='color: red'>사용불가능한 아이디 입니다.</td></tr>";
 						$('#idCheck').empty();
 						$('#idCheck').append(html);
+					}
+				},
+				error: function(){
+					alert("서버에러");
+				}
+			});
+			
+
+		});
+		
+		$('#emailCheck').click(function(){
+			$.ajax({
+				url: "${pageContext.request.contextPath}/member/findIdEmailCheck",
+				type: "POST",
+				data:{
+					"MEMAIL":$('#MEMAIL').val()
+				},
+				success: function(data){
+					if(data == 0 && $.trim($('#MEMAIL').val()) != '' && emailRegExp.test($('#MEMAIL').val())){
+						emailx=true;
+						$('#MEMAIL').attr("readonly",true);
+						var html="<tr><td colspan='3' style='color: green'>사용가능</td></tr>";
+						$('#msg').empty();
+						$('#msg').append(html);
+					}else{
+
+						var html="<tr><td colspan='3' style='color: red'>사용불가능한 이메일 입니다.</td></tr>";
+						$('#msg').empty();
+						$('#msg').append(html);
 					}
 				},
 				error: function(){

@@ -1,9 +1,8 @@
-package MEMBER.controller;
+package member.controller;
 
 import java.io.UnsupportedEncodingException;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,16 +10,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import MEMBER.domain.MemberVO;
-import MEMBER.mail.SendMail;
-import MEMBER.seed.KISA_SEED;
-import MEMBER.service.MemberService;
+import member.domain.MemberVO;
+import member.mail.SendMail;
+import member.seed.KISA_SEED;
+import member.service.MemberService;
+
 
 @Controller
 public class MemberController {	
@@ -49,34 +48,34 @@ public class MemberController {
 		this.pwdEncoder = pwdEncoder;
 	}
 
-	@RequestMapping(value = "/MEMBER/main")
+	@RequestMapping(value = "/member/main")
 	public String main() {
-		return "/MEMBER/main";
+		return "/member/main";
 	}
 
-	@RequestMapping(value = "/MEMBER/agreement")
+	@RequestMapping(value = "/member/agreement")
 	public String agreement() {
-		return "/MEMBER/agreement";
+		return "/member/agreement";
 	}
 
-	@RequestMapping(value = "/MEMBER/selectMember", method = RequestMethod.POST)
+	@RequestMapping(value = "/member/selectMember", method = RequestMethod.POST)
 	public String selectMember(@RequestParam(value = "agree", defaultValue = "false") Boolean agree) {
 		if (!agree) {
-			return "/MEMBER/agreement";
+			return "/member/agreement";
 		}
-		return "/MEMBER/selectMember";
+		return "/member/selectMember";
 	}
 
-	@RequestMapping(value = "/MEMBER/writeNormal", method = RequestMethod.GET)
+	@RequestMapping(value = "/member/writeNormal", method = RequestMethod.GET)
 	public String writeNormal(Model model) {
 		model.addAttribute("memberVO", new MemberVO());
-		return "MEMBER/writeNormal";
+		return "/member/writeNormal";
 	}
 
-	@RequestMapping(value = "/MEMBER/writeNormal", method = RequestMethod.POST)
+	@RequestMapping(value = "/member/writeNormal", method = RequestMethod.POST)
 	public String writeNormal(@Valid MemberVO memberVO, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
-			return "/MEMBER/writeNormal";
+			return "/member/writeNormal";
 		}		
 		
 		String inputPass = memberVO.getMPASSWORD();
@@ -100,26 +99,26 @@ public class MemberController {
 		}
 		
 		String email = memberVO.getMEMAIL();
-		int code = (int) (Math.random()*999999)+100000;
+		String code = Integer.toString((int) ((Math.random()*999999)+100000));
 		
 		sm.sendmail(email, code);
-		memberVO.setMEMAILCHECK(Integer.toString(code));
+		memberVO.setMEMAILCHECK(code);
 
 		memberService.writeNormal(memberVO);
 
-		return "/MEMBER/emailAuthentication";
+		return "/member/emailAuthentication";
 	}
 
-	@RequestMapping(value = "/MEMBER/writeParcelOut", method = RequestMethod.GET)
+	@RequestMapping(value = "/member/writeParcelOut", method = RequestMethod.GET)
 	public String writeParcelOut(Model model) {
 		model.addAttribute("memberVO", new MemberVO());
-		return "MEMBER/writeParcelOut";
+		return "/member/writeParcelOut";
 	}
 
-	@RequestMapping(value = "/MEMBER/writeParcelOut", method = RequestMethod.POST)
+	@RequestMapping(value = "/member/writeParcelOut", method = RequestMethod.POST)
 	public String writeParcelOut(@Valid MemberVO memberVO, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
-			return "/MEMBER/writeParcelOut";
+			return "/member/writeParcelOut";
 		}
 		String inputPass = memberVO.getMPASSWORD();
 		String pass = pwdEncoder.encode(inputPass);
@@ -140,30 +139,44 @@ public class MemberController {
 		}
 		
 		String email = memberVO.getMEMAIL();
-		int code = (int) (Math.random()*999999)+100000;
+		String code = Integer.toString((int) ((Math.random()*999999)+100000));
 		
 		sm.sendmail(email, code);
-		memberVO.setMEMAILCHECK(Integer.toString(code));		
+		memberVO.setMEMAILCHECK(code);		
 
 		memberService.writeParcelOut(memberVO);
-		return "/MEMBER/emailAuthentication";
+		return "/member/emailAuthentication";
 	}
 	
-	@RequestMapping(value = "/MEMBER/emailAuthentication", method = RequestMethod.GET)
+	@RequestMapping(value = "/member/emailAuthentication", method = RequestMethod.GET)
 	public String emailAuthentication(Model model) {
 		
-		return "MEMBER/emailAuthentication";
+		return "/member/emailAuthentication";
 	}
 	
-	@RequestMapping(value = "/MEMBER/emailAuthentication", method = RequestMethod.POST)
+	@RequestMapping(value = "/member/emailAuthentication", method = RequestMethod.POST)
 	public String emailAuthentication(MemberVO memberVO) {
 		
 		String code = memberVO.getMEMAILCHECK();		
 		memberService.emailAuthentication(code);		
-		return "redirect:/MEMBER/main";
+		return "redirect:/member/main";
+	}
+	
+	@RequestMapping(value = "/member/reEmailAuthentication", method = RequestMethod.GET)
+	public String reEmailAuthentication(Model model) {
+		
+		return "/member/reEmailAuthentication";
+	}
+	
+	@RequestMapping(value = "/member/reEmailAuthentication", method = RequestMethod.POST)
+	public String reEmailAuthentication(HttpServletRequest request) {
+		
+		String code = request.getParameter("MEMAILCHECK");
+		memberService.emailAuthentication(code);		
+		return "redirect:/member/login";
 	}
 
-	@RequestMapping(value = "/MEMBER/idCheck.do", method = RequestMethod.GET, produces = "application/text; charset=utf8")
+	@RequestMapping(value = "/member/idCheck", method = RequestMethod.POST, produces = "application/text; charset=utf8")
 	@ResponseBody
 	public String idCheck(HttpServletRequest request) {
 		String userId = (String) request.getParameter("MID");
@@ -171,7 +184,7 @@ public class MemberController {
 		return Integer.toString(result);
 	}
 
-	@RequestMapping(value = "/MEMBER/regCheck.do", method = RequestMethod.GET, produces = "application/text; charset=utf8")
+	@RequestMapping(value = "/member/regCheck", method = RequestMethod.POST, produces = "application/text; charset=utf8")
 	@ResponseBody
 	public String regCheck(HttpServletRequest request) {
 		String reg = (String) request.getParameter("MREGISTRATION");
@@ -179,7 +192,7 @@ public class MemberController {
 		return Integer.toString(result);
 	}
 	
-	@RequestMapping(value = "/MEMBER/emailCheck.do", method = RequestMethod.GET, produces = "application/text; charset=utf8")
+	@RequestMapping(value = "/member/emailCheck", method = RequestMethod.POST, produces = "application/text; charset=utf8")
 	@ResponseBody
 	public String emailChk(HttpServletRequest request) {
 		String eck = (String) request.getParameter("MEMAILCHECK");		
@@ -189,8 +202,96 @@ public class MemberController {
 			return Integer.toString(result);
 		}
 		
-		result = memberService.emailChk(eck);		
+		result = memberService.emailChk(eck);	
+		System.out.println(result);
 		return Integer.toString(result);
 	}
-
+	
+	@RequestMapping(value = "/member/sendEmail", method = RequestMethod.POST, produces = "application/text; charset=utf8")
+	@ResponseBody
+	public String sendEmail(HttpServletRequest request) {
+		String MID = (String) request.getParameter("MID");		
+		
+		MemberVO member = memberService.sendEmail(MID);
+		int result = 0;
+		if(member==null) {
+			result = 0;
+			return Integer.toString(result);
+		}
+		String email = member.getMEMAIL();
+		String emailCheck = member.getMEMAILCHECK();
+		
+		if(emailCheck.equals("Y")) {
+			 result = 2;
+			return Integer.toString(result);
+		}
+		
+		String code = Integer.toString((int) ((Math.random()*999999)+100000));
+		
+		sm.sendmail(email, code);
+		memberService.updateEmailCode(code, email);
+		result = 1;
+		
+		return Integer.toString(result);
+	}
+	
+	@RequestMapping(value = "/member/findId", method = RequestMethod.GET)
+	public String findId(Model model) {
+		
+		return "/member/findId";
+	}
+	
+	@RequestMapping(value = "/member/findId", method = RequestMethod.POST)
+	public String findId(HttpServletRequest request) {
+		
+		String email = request.getParameter("MEMAIL");
+		MemberVO member = memberService.findId(email);
+		String id = member.getMID();
+		
+		sm.sendmailFindId(email, id);
+		
+		return "redirect:/member/login";
+	}	
+	
+	@RequestMapping(value = "/member/findIdEmailCheck", method = RequestMethod.POST, produces = "application/text; charset=utf8")
+	@ResponseBody
+	public String findIdEmailCheck(HttpServletRequest request) {
+		String email = (String) request.getParameter("MEMAIL");
+		int result = memberService.findIdEmailCheck(email);
+		return Integer.toString(result);
+	}
+	
+	@RequestMapping(value = "/member/findPassword", method = RequestMethod.GET)
+	public String findPassword(Model model) {
+		
+		return "/member/findPassword";
+	}
+	
+	
+	@RequestMapping(value = "/member/findPassword", method = RequestMethod.POST)
+	public String findPassword(HttpServletRequest request) {
+		
+		String email = (String) request.getParameter("MEMAIL");
+		String id = (String) request.getParameter("MID");
+		String code = Integer.toString((int) ((Math.random()*999999)+100000));
+		
+		sm.temporaryPassword(email, id, code);
+		
+		String temporaryPass = pwdEncoder.encode(code);
+		
+		memberService.updatePassword(id, email, temporaryPass);
+		
+		return "redirect:/member/login";
+	}
+	
+	@RequestMapping(value = "/member/findPasswordCheck", method = RequestMethod.POST, produces = "application/text; charset=utf8")
+	@ResponseBody
+	public String findPasswordCheck(HttpServletRequest request) {
+		String email = (String) request.getParameter("MEMAIL");
+		String id = (String) request.getParameter("MID");
+		int result = memberService.findPasswordCheck(id ,email);
+		return Integer.toString(result);
+	}
+	
+	
 }

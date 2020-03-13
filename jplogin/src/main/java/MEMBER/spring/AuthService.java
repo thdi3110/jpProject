@@ -1,7 +1,7 @@
-package MEMBER.spring;
+package member.spring;
 
-import MEMBER.dao.MemberDao;
-import MEMBER.domain.MemberVO;
+import member.dao.MemberDao;
+import member.domain.MemberVO;
 
 public class AuthService {
 	private MemberDao memberDao;	

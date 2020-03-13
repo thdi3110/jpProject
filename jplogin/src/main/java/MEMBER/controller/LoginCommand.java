@@ -1,4 +1,4 @@
-package MEMBER.controller;
+package member.controller;
 
 public class LoginCommand {
 

@@ -14,10 +14,10 @@
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
 			<param-value>
-				classpath:MEMBER/spring-security.xml					
-				classpath:MEMBER/spring-mvc.xml 
-				classpath:MEMBER/spring-member.xml
-				classpath:MEMBER/spring-controller.xml					
+				classpath:member/spring-security.xml					
+				classpath:member/spring-mvc.xml 
+				classpath:member/spring-member.xml
+				classpath:member/spring-controller.xml					
 							
 			</param-value>
 		</init-param>

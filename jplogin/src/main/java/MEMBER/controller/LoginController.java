@@ -1,4 +1,4 @@
-package MEMBER.controller;
+package member.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -10,10 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import MEMBER.domain.MemberVO;
-import MEMBER.service.MemberService;
-import MEMBER.spring.AuthInfo;
-import MEMBER.spring.AuthService;
+import member.domain.MemberVO;
+import member.service.MemberService;
+import member.spring.AuthInfo;
+import member.spring.AuthService;
+
 
 @Controller
 public class LoginController {
@@ -42,21 +43,21 @@ public class LoginController {
 		this.memberService = memberService;
 	}
 
-	@RequestMapping(value = "/MEMBER/login", method = RequestMethod.GET)
+	@RequestMapping(value = "/member/login", method = RequestMethod.GET)
 	public String form(LoginCommand loginCommend) {
-		return "/MEMBER/login";
+		return "/member/login";
 	}
 
-	@RequestMapping(value = "/MEMBER/login", method = RequestMethod.POST)
+	@RequestMapping(value = "/member/login", method = RequestMethod.POST)
 	public String submit(LoginCommand loginCommend, HttpSession session) {
 
 		AuthInfo authInfo = authService.authenticate(loginCommend.getMID());
 		session.setAttribute("authInfo", authInfo);		
 		
-		return "/MEMBER/main";
+		return "/member/main";
 	}
 	
-	@RequestMapping(value = "/MEMBER/login.do", method = RequestMethod.GET, produces = "application/text; charset=utf8")
+	@RequestMapping(value = "/member/login", method = RequestMethod.POST, produces = "application/text; charset=utf8")
 	@ResponseBody
 	public String loginCheck(HttpServletRequest request) {
 		String userId = (String) request.getParameter("MID");
@@ -78,6 +79,12 @@ public class LoginController {
 			 result = 2;
 		}
 		return Integer.toString(result);
+	}
+	
+	@RequestMapping("/member/logout")
+	public String logout(HttpSession session) {
+		session.invalidate();
+		return "redirect:/member/main";
 	}
 
 }

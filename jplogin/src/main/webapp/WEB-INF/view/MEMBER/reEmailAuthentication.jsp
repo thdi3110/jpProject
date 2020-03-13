@@ -13,26 +13,29 @@
 	<h1>이메일 인증</h1>
 	<hr>
 	<form id="emailChk" name="emailChk"
-		action="${pageContext.request.contextPath}/MEMBER/emailAuthentication"
+		action="${pageContext.request.contextPath}/member/reEmailAuthentication"
 		method="post">
 		<table>
 			<tbody>
 				<tr>
-					<td>이메일</td>
-					<td><input type="text" id="MEMAIL" name="MEMAIL"></td>	
-					<td><input type="button" id="email" value="이메일 발송"></td>				
-				</tr>
-				<tr>
-					<td>인증번호</td>
-					<td><input type="text" id="MEMAILCHECK" name="MEMAILCHECK"></td>	
-					<td><input type="button" id="check" value="이메일체크"></td>				
+					<td>아이디</td>
+					<td><input type="text" id="MID" name="MID"></td>	
+					<td><input type="button" id="sendEmail" value="이메일 발송"></td>				
 				</tr>
 				<tr>
 					<td colspan=3 id="msg"></td>
+				</tr></br></br>
+				<tr>
+					<td>인증번호</td>					
+					<td><input type="text" id="MEMAILCHECK" name="MEMAILCHECK"></td>	
+					<td><input type="button" id="check" value="인증번호 확인"></td>				
 				</tr>
 				<tr>
-					<td colspan="3"><input type="button" id="signUp" value="회원가입"></td>
+					<td colspan=3 id="msg1"></td>
 				</tr>
+				<tr>
+					<td colspan="3"><input type="button" id="reEmail" value="이메일 인증"></td>
+				</tr>				
 			</tbody>
 		</table>
 	</form>
@@ -40,30 +43,54 @@
 <script type="text/javascript">
 	$(document).ready(function(e){
 		var emailckx = false;
-		$('#signUp').click(function(){	
-			if($.trim($('#MEMAILCHECK').val()) == ''){
+		var idckx = false;
+		$('#reEmail').click(function(){	
+			if($.trim($('#MID').val()) == ''){
+				alert("아이디를 입력해주세요.");
+				$('#MID').focus();
+				return;
+			}else if($.trim($('#MEMAILCHECK').val()) == ''){
 				alert("인증코드를 입력해주세요.");
 				$('#MEMAILCHECK').focus();
 				return;
 			}
-			if(emailckx==false){
-				alert("이메일체크를 클릭해주세요.");
+			
+			if(idchx==false){
+				alert("이메일 발송을 클릭해주세요.");
+				return;
+			}else if(emailckx==false){
+				alert("인증번호 확인을 클릭해주세요.");
 				return;
 			}else{
 				$('#emailChk').submit();
 			} 
 		});
 		
-		$('#check').click(function(){
+		$('#sendEmail').click(function(){
 			$.ajax({
-				url: "${pageContext.request.contextPath}/MEMBER/emailCheck.do",
-				type: "GET",
+				url: "${pageContext.request.contextPath}/member/sendEmail",
+				type: "POST",
 				data:{
-					"MEMAILCHECK":$('#MEMAILCHECK').val()
+					"MID":$('#MID').val()
 				},
 				success: function(data){
-					if(data == 0 && $.trim($('#MEMAILCHECK').val()) != '' ){						
-						var html="<tr><td colspan='3' style='color: red'>인증번호가 틀립니다.</td></tr>";
+					if(data == 1 && $.trim($('#MID').val()) != ''){
+						idchx = true
+						$('#MID').attr("readonly",true);
+						var html="<tr><td colspan='3' style='color: green'>이메일이 발송되었습니다.</td></tr>";
+						$('#msg').empty();
+						$('#msg').append(html);
+					
+					}else if(data == 0 && $.trim($('#MID').val()) != '' ){						
+						var html="<tr><td colspan='3' style='color: red'>해당아이디가 없습니다.</td></tr>";
+						$('#msg').empty();
+						$('#msg').append(html);
+					}else if(data == null && $.trim($('#MID').val()) != ''){
+						var html="<tr><td colspan='3' style='color: red'>아이디를 입력해주세요.</td></tr>";
+						$('#msg').empty();
+						$('#msg').append(html);
+					}else if(data == 2 && $.trim($('#MID').val()) != ''){
+						var html="<tr><td colspan='3' style='color: red'>인증된 회원입니다.</td></tr>";
 						$('#msg').empty();
 						$('#msg').append(html);
 					}
@@ -72,8 +99,36 @@
 					alert("서버에러");
 				}
 			});
-			
-
+		});
+		
+		$('#check').click(function(){
+			$.ajax({
+				url: "${pageContext.request.contextPath}/member/emailCheck",
+				type: "POST",
+				data:{
+					"MEMAILCHECK":$('#MEMAILCHECK').val()
+				},
+				success: function(data){
+					if(data == 0 && $.trim($('#MEMAILCHECK').val()) != '' ){						
+						var html="<tr><td colspan='3' style='color: red'>인증번호가 틀립니다.</td></tr>";
+						$('#msg1').empty();
+						$('#msg1').append(html);
+					}else if($.trim($('#MEMAILCHECK').val()) == '' ){						
+						var html="<tr><td colspan='3' style='color: red'>인증정보가 없습니다.</td></tr>";
+						$('#msg1').empty();
+						$('#msg1').append(html);
+					}else{
+						emailckx = true
+						$('#MEMAILCHECK').attr("readonly",true);
+						var html="<tr><td colspan='3' style='color: green'>확인되었습니다.</td></tr>";
+						$('#msg1').empty();
+						$('#msg1').append(html);
+					}		
+				},
+				error: function(){
+					alert("서버에러");
+				}
+			});
 		});
 	});
 </script>

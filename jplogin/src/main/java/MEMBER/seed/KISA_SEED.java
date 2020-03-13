@@ -1,4 +1,4 @@
-package MEMBER.seed;
+package member.seed;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Base64;

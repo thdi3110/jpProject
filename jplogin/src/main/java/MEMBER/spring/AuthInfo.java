@@ -1,4 +1,4 @@
-package MEMBER.spring;
+package member.spring;
 
 public class AuthInfo {
 	

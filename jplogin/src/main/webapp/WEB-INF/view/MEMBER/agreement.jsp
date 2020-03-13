@@ -7,7 +7,7 @@
 <title>이용약관</title>
 </head>
 <body>
-	<form action = "${pageContext.request.contextPath}/MEMBER/selectMember" method = "post">
+	<form action = "${pageContext.request.contextPath}/member/selectMember" method = "post">
 	<div class="mainContent oneColumnLayout">
 		<div id="liteboxHook" class="contentModuleWrapper">
 			<div class="contentModule contentModuleFirst" id="contentModule-0">

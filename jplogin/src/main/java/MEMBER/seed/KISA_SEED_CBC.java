@@ -4,7 +4,7 @@
 @author Copyright (c) 2013 by KISA
 @remarks http://seed.kisa.or.kr/
 */
-package MEMBER.seed;
+package member.seed;
 
 public class KISA_SEED_CBC {
 

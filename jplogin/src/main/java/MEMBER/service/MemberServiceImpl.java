@@ -1,12 +1,12 @@
-package MEMBER.service;
+package member.service;
 
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import MEMBER.dao.MemberDao;
-import MEMBER.domain.MemberVO;
+import member.dao.MemberDao;
+import member.domain.MemberVO;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -48,10 +48,45 @@ public class MemberServiceImpl implements MemberService {
 		return result;
 	}
 	
+	public MemberVO sendEmail(String MID) {
+		System.out.println(MID);
+		MemberVO result = memberDao.sendEmail(MID);
+		return result;
+	}
+	
 	public MemberVO loginCheck(String MID) {
 		MemberVO result = memberDao.loginCheck(MID);
 		return result;
 	}
 	
+	public MemberVO findPassword(String id, String email) {
+		MemberVO result = memberDao.findPassword(id, email);
+		return result;
+	}
 	
+	
+	public int updateEmailCode(String code , String email) {
+		int result = memberDao.updateEmailCode(code, email);
+		return result;
+	}
+	
+	public int findIdEmailCheck(String email) {
+		int result = memberDao.findIdEmailCheck(email);
+		return result;
+	}
+	
+	public MemberVO findId(String email) {
+		MemberVO result = memberDao.findId(email);
+		return result;
+	}
+	
+	public int findPasswordCheck(String id, String email) {
+		int result = memberDao.findPasswordCheck(id, email);
+		return result;
+	}
+	
+	public int updatePassword(String id, String email, String temporaryPass) {
+		int result = memberDao.updatePassword(id, email, temporaryPass);
+		return result;
+	}
 }

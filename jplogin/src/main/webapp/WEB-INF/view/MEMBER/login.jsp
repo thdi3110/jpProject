@@ -13,7 +13,7 @@
 	<h1>로그인</h1>
 	<hr>
 	<form id="loginFrm" name="loginFrm"
-		action="${pageContext.request.contextPath}/MEMBER/login" method="post">
+		action="${pageContext.request.contextPath}/member/login" method="post">
 		<table>
 			<tbody>
 				<tr>
@@ -33,9 +33,9 @@
 			</tbody>
 		</table>
 	</form>
-	<a href = "<c:url value="/MEMBER/reEmailAuthentication"/>">이메일 인증</a><br/><br/>
-	<a href = "<c:url value="/MEMBER/findId"/>">아이디 찾기</a><br/><br/>
-	<a href = "<c:url value="/MEMBER/findPassword"/>">비밀번호 찾기</a><br/><br/>
+	<a href = "<c:url value="/member/reEmailAuthentication"/>">이메일 인증</a><br/><br/>
+	<a href = "<c:url value="/member/findId"/>">아이디 찾기</a><br/><br/>
+	<a href = "<c:url value="/member/findPassword"/>">비밀번호 찾기</a><br/><br/>
 </body>
 <script type="text/javascript">
 $(document).ready(function(e){
@@ -54,8 +54,8 @@ $(document).ready(function(e){
 		}	
 	
 		$.ajax({
-			url: "${pageContext.request.contextPath}/MEMBER/login.do",
-			type: "GET",
+			url: "${pageContext.request.contextPath}/member/login",
+			type: "POST",
 			data:{
 				"MID":$('#MID').val(),
 				"MPASSWORD":$('#MPASSWORD').val()

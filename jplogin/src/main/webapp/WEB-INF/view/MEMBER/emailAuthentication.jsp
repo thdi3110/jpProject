@@ -13,7 +13,7 @@
 	<h1>이메일 인증</h1>
 	<hr>
 	<form id="emailChk" name="emailChk"
-		action="${pageContext.request.contextPath}/MEMBER/emailAuthentication"
+		action="${pageContext.request.contextPath}/member/emailAuthentication"
 		method="post">
 		<table>
 			<tbody>
@@ -51,8 +51,8 @@
 		
 		$('#check').click(function(){
 			$.ajax({
-				url: "${pageContext.request.contextPath}/MEMBER/emailCheck.do",
-				type: "GET",
+				url: "${pageContext.request.contextPath}/member/emailCheck",
+				type: "POST",
 				data:{
 					"MEMAILCHECK":$('#MEMAILCHECK').val()
 				},
@@ -61,9 +61,17 @@
 						var html="<tr><td colspan='3' style='color: red'>인증번호가 틀립니다.</td></tr>";
 						$('#msg').empty();
 						$('#msg').append(html);
+					}else if($.trim($('#MEMAILCHECK').val()) == '' ){						
+						var html="<tr><td colspan='3' style='color: red'>인증정보가 없습니다.</td></tr>";
+						$('#msg').empty();
+						$('#msg').append(html);
 					}else{
-						emailckx=true
-					}
+						emailckx = true
+						$('#MEMAILCHECK').attr("readonly",true);
+						var html="<tr><td colspan='3' style='color: green'>확인되었습니다.</td></tr>";
+						$('#msg').empty();
+						$('#msg').append(html);
+					}	
 				},
 				error: function(){
 					alert("서버에러");

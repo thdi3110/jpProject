@@ -1,4 +1,4 @@
-package MEMBER.domain;
+package member.domain;
 
 import java.util.Date;
 
@@ -30,35 +30,40 @@ public class MemberVO {
 		
 	}
 	
+	public MemberVO(String mEMAIL, String mEMAILCHECK) {
+		this.MEMAIL = mEMAIL;
+		this.MEMAILCHECK = mEMAILCHECK;
+	}
+	
 	
 
 	public MemberVO(String mID, String mNAME, String mPASSWORD, String mEMAIL, String mADDRESS, String mPHONE,
 			String mBCODE, String mACCOUNT, String mREGISTRATION, String mEMAILCHECK) {
 		super();
-		MID = mID;
-		MNAME = mNAME;
-		MPASSWORD = mPASSWORD;
-		MEMAIL = mEMAIL;
-		MADDRESS = mADDRESS;
-		MPHONE = mPHONE;
-		MBCODE = mBCODE;
-		MACCOUNT = mACCOUNT;
-		MREGISTRATION = mREGISTRATION;
-		MEMAILCHECK = mEMAILCHECK;
+		this.MID = mID;
+		this.MNAME = mNAME;
+		this.MPASSWORD = mPASSWORD;
+		this.MEMAIL = mEMAIL;
+		this.MADDRESS = mADDRESS;
+		this.MPHONE = mPHONE;
+		this.MBCODE = mBCODE;
+		this.MACCOUNT = mACCOUNT;
+		this.MREGISTRATION = mREGISTRATION;
+		this.MEMAILCHECK = mEMAILCHECK;
 	}	
 	
 	public MemberVO(String mID, String mNAME, String mPASSWORD, String mEMAIL, String mADDRESS, String mPHONE,
 			String mBCODE, String mACCOUNT, String mEMAILCHECK) {
 		super();
-		MID = mID;
-		MNAME = mNAME;
-		MPASSWORD = mPASSWORD;
-		MEMAIL = mEMAIL;
-		MADDRESS = mADDRESS;
-		MPHONE = mPHONE;
-		MBCODE = mBCODE;
-		MACCOUNT = mACCOUNT;
-		MEMAILCHECK = mEMAILCHECK;
+		this.MID = mID;
+		this.MNAME = mNAME;
+		this.MPASSWORD = mPASSWORD;
+		this.MEMAIL = mEMAIL;
+		this.MADDRESS = mADDRESS;
+		this.MPHONE = mPHONE;
+		this.MBCODE = mBCODE;
+		this.MACCOUNT = mACCOUNT;
+		this.MEMAILCHECK = mEMAILCHECK;
 	}
 
 
@@ -73,8 +78,7 @@ public class MemberVO {
 		MID = mID;
 	}
 
-
-
+	
 	public String getMNAME() {
 		return MNAME;
 	}

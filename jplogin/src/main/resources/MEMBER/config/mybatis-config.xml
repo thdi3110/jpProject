@@ -10,6 +10,6 @@
    </settings>
    
    <typeAliases>
-      <typeAlias alias="MemberVO" type="MEMBER.domain.MemberVO"/>
+      <typeAlias alias="MemberVO" type="member.domain.MemberVO"/>
    </typeAliases>
 </configuration>

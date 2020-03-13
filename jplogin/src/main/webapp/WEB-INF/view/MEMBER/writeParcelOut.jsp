@@ -12,7 +12,7 @@
 <body>
 	<h1>회원가입</h1>
 	<hr>
-	<form id="signFrm" name="signFrm" action="${pageContext.request.contextPath}/MEMBER/writeParcelOut" method="post">
+	<form id="signFrm" name="signFrm" action="${pageContext.request.contextPath}/member/writeParcelOut" method="post">
 		<table>
 			<tbody>
 				<tr>
@@ -37,7 +37,11 @@
 				</tr>
 				<tr>
 					<td>이메일</td>
-					<td colspan="2"><input id="MEMAIL" name="MEMAIL" placeholder = "이메일형식" type="email" required></td>
+					<td><input id="MEMAIL" name="MEMAIL" placeholder = "이메일형식" type="email" required></td>
+					<td><input type="button" id="emailCheck" value="이메일 중복체크"></td>
+				</tr>
+				<tr>
+					<td colspan=3 id="msg"></td>
 				</tr>
 				<tr>
 					<td>주소</td>
@@ -82,7 +86,7 @@
 				</tr>
 				<tr>
 					<td>동물등록번호</td>
-					<td colspan="2"><input id="MREGISTRATION" name="MREGISTRATION" type="text"></td>
+					<td><input id="MREGISTRATION" name="MREGISTRATION" type="text"></td>
 					<td><input type="button" id="regChk" value="동물등록번호 확인"></td>
 				</tr>
 				<tr>
@@ -99,6 +103,7 @@
 	$(document).ready(function(e){
 		
 		var idx = false;
+		var emailx = false;
 		var reg = false;
 		var passwordRegExp = /^[A-Za-z0-9]{6,12}$/;
 		var emailRegExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
@@ -170,8 +175,8 @@
 		
 		$('#check').click(function(){
 			$.ajax({
-				url: "${pageContext.request.contextPath}/MEMBER/idCheck.do",
-				type: "GET",
+				url: "${pageContext.request.contextPath}/member/idCheck",
+				type: "POST",
 				data:{
 					"MID":$('#MID').val()
 				},
@@ -196,10 +201,40 @@
 			
 
 		});
+		
+		$('#emailCheck').click(function(){
+			$.ajax({
+				url: "${pageContext.request.contextPath}/member/findIdEmailCheck",
+				type: "POST",
+				data:{
+					"MEMAIL":$('#MEMAIL').val()
+				},
+				success: function(data){
+					if(data == 0 && $.trim($('#MEMAIL').val()) != '' && emailRegExp.test($('#MEMAIL').val())){
+						emailx=true;
+						$('#MEMAIL').attr("readonly",true);
+						var html="<tr><td colspan='3' style='color: green'>사용가능</td></tr>";
+						$('#msg').empty();
+						$('#msg').append(html);
+					}else{
+
+						var html="<tr><td colspan='3' style='color: red'>사용불가능한 이메일 입니다.</td></tr>";
+						$('#msg').empty();
+						$('#msg').append(html);
+					}
+				},
+				error: function(){
+					alert("서버에러");
+				}
+			});
+			
+
+		});
+		
 		$('#regChk').click(function(){
 			$.ajax({
-				url: "${pageContext.request.contextPath}/MEMBER/regCheck.do",
-				type: "GET",
+				url: "${pageContext.request.contextPath}/member/regCheck",
+				type: "POST",
 				data:{
 					"MREGISTRATION":$('#MREGISTRATION').val()
 				},

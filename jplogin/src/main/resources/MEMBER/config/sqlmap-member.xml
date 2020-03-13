@@ -37,4 +37,32 @@
       <select id="loginCheck" resultType="MemberVO" parameterType="String">
       	select MPASSWORD, MEMAILCHECK from MEMBER where MID = #{MID}
       </select>
+      
+      <select id="sendEmail" resultType="MemberVO" parameterType="String">
+      	select MEMAIL, MEMAILCHECK from MEMBER where MID = #{MID}
+      </select>
+      
+      <update id="updateEmailCode" parameterType="hashmap">
+      	update MEMBER set MEMAILCHECK = #{code} where MEMAIL = #{email}
+      </update>   
+      
+      <select id ="findIdEmailCheck" resultType="int">
+      	select count(*) from MEMBER where MEMAIL = #{email}
+      </select>  
+      
+      <select id ="findId" resultType="MemberVO" parameterType="String">
+      	select MID from MEMBER where MEMAIL = #{email}
+      </select> 
+      
+      <select id ="findPasswordCheck" parameterType="hashmap" resultType="int">
+      	select count(*) from MEMBER where MID = #{id} and MEMAIL = #{email} 
+      </select> 
+      
+      <select id ="findPassword" parameterType="hashmap" resultType="MemberVO">
+      	select MPASSWORD from MEMBER where MID = #{id} and MEMAIL = #{email} 
+      </select> 
+      
+      <update id="updatePassword" parameterType="hashmap">
+      	update MEMBER set MPASSWORD = #{temporaryPass} where MID = #{id} and MEMAIL = #{email} 
+      </update>   	
 </mapper>
