@@ -1,9 +1,5 @@
 Manifest-Version: 1.0
-<<<<<<< HEAD
 Built-By: Jung Sun
-=======
-Built-By: user1
->>>>>>> 74f7694a2d79d22bb86dbbc695be873886fa9112
 Build-Jdk: 1.8.0_231
 Created-By: Maven Integration for Eclipse
 

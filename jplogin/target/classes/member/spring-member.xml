@@ -53,15 +53,21 @@
 	 </bean>
 	 
 	 <bean id="memberService" class="member.service.MemberServiceImpl">
-	    <property name="memberDao" ref="memberDao"/>
+	    <property name="memberDao" ref="memberDao"/>	    
 	 </bean>	 
 	 
-	 <bean id="memberServiceImpl" class="member.service.MemberServiceImpl">
-	    <property name="memberDao" ref="memberDao"/>
-	 </bean> 
+	 <bean id="memberServiceImpl" class="member.service.MemberServiceImpl">	
+	 	<property name="memberDao" ref="memberDao"/>
+	    <property name="pwdEncoder" ref="bcryptPasswordEncoder"></property>	
+	    <property name="sm" ref="SendMail"></property> 
+	    <property name="seed" ref="KISA_SEED"></property> 	      
+	 </bean>
+	  
+	 <bean id = "KISA_SEED" class = "member.seed.KISA_SEED"></bean>
+	 
 	 <bean id="SendMail" class="member.mail.SendMail">	    
 	 </bean> 
-	 <bean id = "authService" class = "member.spring.AuthService">
-	 	<property name="memberDao" ref = "memberDao"></property>
+	 <bean id = "authService" class = "member.service.AuthService">
+	 	<property name="memberDao" ref = "memberDao"></property>	 		
 	 </bean>	 
 </beans>

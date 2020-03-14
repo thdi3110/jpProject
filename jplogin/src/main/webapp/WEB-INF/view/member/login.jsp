@@ -54,7 +54,7 @@ $(document).ready(function(e){
 		}	
 	
 		$.ajax({
-			url: "${pageContext.request.contextPath}/member/login",
+			url: "${pageContext.request.contextPath}/member/loginCheck",
 			type: "POST",
 			data:{
 				"MID":$('#MID').val(),

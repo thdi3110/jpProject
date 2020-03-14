@@ -35,8 +35,9 @@ public class MemberDaoMybatis implements MemberDao{
 		return sqlSessionTemplate.update("memberDao.updateEmailAuthentication", MEMAILCHECK);
 	}
 
-	public MemberVO selectById(String MID) {		
-		List<MemberVO> result = sqlSessionTemplate.selectList("memberDao.selectById", MID);
+	public MemberVO selectById(String id) {	
+		System.out.println(id+"요기");
+		List<MemberVO> result = sqlSessionTemplate.selectList("memberDao.selectById", id);
 		return result.isEmpty()?null:result.get(0);
 	}
 	

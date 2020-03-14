@@ -169,6 +169,7 @@
 				alert("동물등록번호를 확인해주세요.");
 				return;
 			}else{
+				alert("이메일로 인증번호를 보냈습니다.")
 				$('#signFrm').submit();
 			} 
 		});
