@@ -8,12 +8,15 @@
 
 <!-- <bean class="controller.RegisterController"/> -->
 	<bean id="memberController" class="member.controller.MemberController">
-	    <property name="memberService" ref="memberServiceImpl"/>	      
+	    <property name="memberService" ref="memberServiceImpl"/>
+	    <property name="pwdEncoder" ref="bcryptPasswordEncoder"></property>	
+	    <property name="sm" ref="SendMail"></property>    
 	</bean>
 	
 	<bean id ="loginController" class = "member.controller.LoginController">
-		<property name="authService" ref = "authService"></property>	
-		 
+		<property name="authService" ref = "authService"></property>
+		<property name="pwdEncoderCheck" ref="bcryptPasswordEncoder"></property>
+		 <property name="memberService" ref="memberServiceImpl"/>
 	</bean>
 	
 </beans>

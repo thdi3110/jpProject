@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="memberDao">
+      <insert id = "insertNormal">
+      	insert into MEMBER(MID, MNAME, MPASSWORD, MEMAIL, MADDRESS, MPHONE, MBCODE, MACCOUNT, MDIVISION, MJOINDATE, MEMAILCHECK)
+      		values( #{MID}, #{MNAME}, #{MPASSWORD}, #{MEMAIL}, #{MADDRESS}, #{MPHONE}, #{MBCODE}, #{MACCOUNT}, 'A1', SYSDATE, #{MEMAILCHECK})
+      </insert>
+      
+      <insert id = "insertParcelOut">
+      	insert into MEMBER( MID, MNAME, MPASSWORD, MEMAIL, MADDRESS, MPHONE, MBCODE, MACCOUNT, MREGISTRATION, MDIVISION, MJOINDATE, MEMAILCHECK)
+      		values( #{MID}, #{MNAME}, #{MPASSWORD}, #{MEMAIL}, #{MADDRESS}, #{MPHONE}, #{MBCODE}, #{MACCOUNT}, #{MREGISTRATION}, 'B1', SYSDATE, #{MEMAILCHECK})
+      </insert>
+      
+      <update id="updateEmailAuthentication">
+      	update MEMBER set MEMAILCHECK = 'Y' where MEMAILCHECK = #{MEMAILCHECK}
+      </update>
+      
+      <select id= "selectById" resultType="MemberVO" parameterType="String"> <!-- resultType="MemberVO" parameterType="String" -->
+      	select MID, MEMAIL, MDIVISION,  MEMAILCHECK from MEMBER where MID = #{id}
+      </select>
+      
+      <select id="idCheck" resultType="int">
+      	select count(*) from MEMBER where MID = #{MID}
+      </select>
+      
+      <select id ="regCheck" resultType="int">
+      	select count(*) from REGISTRATION_DB where RREGISTRATION = #{RREGISTRATION}
+      </select>      
+     
+	  <select id="emailChk" resultType="int">
+      	select count(*) from MEMBER where MEMAILCHECK = #{MEMAILCHECK}
+      </select>
+      
+      <select id="loginCheck" resultType="MemberVO" parameterType="String">
+      	select MPASSWORD, MEMAILCHECK from MEMBER where MID = #{MID}
+      </select>
+      
+      <select id="sendEmail" resultType="MemberVO" parameterType="String">
+      	select MEMAIL, MEMAILCHECK from MEMBER where MID = #{MID}
+      </select>
+      
+      <update id="updateEmailCode" parameterType="hashmap">
+      	update MEMBER set MEMAILCHECK = #{code} where MEMAIL = #{email}
+      </update>   
+      
+      <select id ="findIdEmailCheck" resultType="int">
+      	select count(*) from MEMBER where MEMAIL = #{email}
+      </select>  
+      
+      <select id ="findId" resultType="MemberVO" parameterType="String">
+      	select MID from MEMBER where MEMAIL = #{email}
+      </select> 
+      
+      <select id ="findPasswordCheck" parameterType="hashmap" resultType="int">
+      	select count(*) from MEMBER where MID = #{id} and MEMAIL = #{email} 
+      </select> 
+      
+      <select id ="findPassword" parameterType="hashmap" resultType="MemberVO">
+      	select MPASSWORD from MEMBER where MID = #{id} and MEMAIL = #{email} 
+      </select> 
+      
+      <update id="updatePassword" parameterType="hashmap">
+      	update MEMBER set MPASSWORD = #{temporaryPass} where MID = #{id} and MEMAIL = #{email} 
+      </update>   	
+</mapper>
