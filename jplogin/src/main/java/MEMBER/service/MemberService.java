@@ -4,9 +4,9 @@ import member.domain.MemberVO;
 
 public interface MemberService {
 	
-	public abstract void writeNormal(MemberVO memberVO);
+	public abstract void writeNormal(MemberVO memberVO, String password, String email, String phnum, String phone, String account);
 	
-	public abstract void writeParcelOut(MemberVO memberVO);
+	public abstract void writeParcelOut(MemberVO memberVO, String password, String email, String phnum, String phone, String account);
 	
 	public abstract void emailAuthentication(String MEMAILCHECK);
 	
@@ -22,15 +22,15 @@ public interface MemberService {
 	
 	public abstract int findPasswordCheck(String id, String email);
 	
-	public abstract int updatePassword(String id, String email, String temporaryPass);
+	public abstract int updatePassword(String id, String email);
 	
 	public abstract MemberVO findPassword(String id, String email);
 	
 	public abstract MemberVO findId(String email);
 	
-	public abstract MemberVO sendEmail(String MID);
+	public abstract String sendEmail(String MID);
 	
-	public abstract MemberVO loginCheck(String MID);
+	public abstract String loginCheck(String id, String matchPassword);
 	
 	
 }

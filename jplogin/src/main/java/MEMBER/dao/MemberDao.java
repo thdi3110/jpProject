@@ -26,9 +26,9 @@ public interface MemberDao {
 	 
 	 public abstract MemberVO sendEmail(String MID);
 	 
-	 public abstract MemberVO selectById(String MID);
+	 public abstract MemberVO selectById(String id);
 	
-	 public abstract MemberVO loginCheck(String MID);
+	 public abstract MemberVO loginCheck(String id);
 
 	 public abstract int updateEmailCode(String code, String email);
 	 
